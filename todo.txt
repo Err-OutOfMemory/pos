@@ -1,0 +1,86 @@
+src/
+│
+├── main.ts
+├── App.vue
+│
+├── assets/
+│   ├── images/
+│   └── styles/
+│       ├── main.css
+│       └── variables.css
+│
+├── api/
+│   ├── axios.ts          # axios instance + interceptor
+│   ├── auth.api.ts       # login / pin / register pin
+│   ├── user.api.ts
+│   ├── category.api.ts
+│   ├── product.api.ts
+│   └── order.api.ts
+│
+├── router/
+│   ├── index.ts
+│   └── guards.ts         # jwt / role guard
+│
+├── stores/
+│   ├── auth.store.ts     # jwt / user / role
+│   ├── cart.store.ts     # create order (POS)
+│   └── category.store.ts
+│
+├── layouts/
+│   ├── AuthLayout.vue    # login / pin
+│   ├── AdminLayout.vue   # admin pages
+│   └── AppLayout.vue     # cashier / POS
+│
+├── views/
+│   ├── auth/
+│   │   ├── LoginEmployee.vue      # step 1: employee code
+│   │   ├── LoginPin.vue           # step 2: enter PIN
+│   │   └── RegisterPin.vue        # register PIN (2 times)
+│   │
+│   ├── admin/
+│   │   ├── Dashboard.vue
+│   │   ├── Categories.vue
+│   │   ├── Products.vue
+│   │
+│   ├── pos/
+│   │   ├── ProductList.vue        # choose product
+│   │   ├── Cart.vue
+│   │   └── Checkout.vue
+│   │
+│   └── NotFound.vue
+│
+├── components/
+│   ├── common/
+│   │   ├── BaseButton.vue
+│   │   ├── BaseInput.vue
+│   │   ├── BaseModal.vue
+│   │
+│   ├── auth/
+│   │   ├── EmployeeInput.vue
+│   │   └── PinInput.vue
+│   │
+│   ├── admin/
+│   │   ├── CategoryForm.vue
+│   │   └── ProductForm.vue
+│   │
+│   └── pos/
+│       ├── ProductCard.vue
+│       └── CartItem.vue
+│
+├── composables/
+│   ├── useAuth.ts
+│   ├── useJwt.ts
+│   └── useRole.ts
+│
+├── utils/
+│   ├── constants.ts     # role, status
+│   └── formatter.ts    # price, date
+│
+└── types/
+    ├── auth.ts
+    ├── user.ts
+    ├── product.ts
+    └── order.ts
+
+Color Pallet:
+=>  https://colorhunt.co/palette/f9f8f6efe9e3d9cfc7c9b59c
