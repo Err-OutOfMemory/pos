@@ -70,7 +70,7 @@ const submit = async () => {
     console.log('Registering PIN:', pin.value.join(''))
     const { data } = await registerPin(auth.employeeId!, pin.value.join(''))
 
-    auth.setAuth(data.token, data.role)
+    auth.setAuth(data.token, data.user)
     auth.clearTempUser()
 
     router.replace('/pos')
