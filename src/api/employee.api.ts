@@ -18,7 +18,6 @@ export const createEmployee = (data: {
   return axios.post('/employees', data)
 }
 
-
 export const updateEmployee = (id: number, data: Partial<Employee>) => {
   return axios.put(`/employees/${id}`, data)
 }

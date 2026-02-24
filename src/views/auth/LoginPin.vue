@@ -90,6 +90,16 @@ const submit = async () => {
   <!-- LOADING -->
   <CoffeeLoader :show="isLoading" />
   <div class="space-y-6">
+    <div class="text-center space-y-1">
+      <div
+        class="inline-flex items-center justify-center w-full h-16 rounded-sm bg-indigo-100 mb-2"
+      >
+        <h1 class="text-xl font-bold text-slate-800">
+          {{ `รหัสพนักงาน: ${auth.employeeCode}` }}
+        </h1>
+      </div>
+    </div>
+
     <h2 class="text-2xl font-bold text-center text-slate-800">Enter PIN</h2>
     <!-- PIN DISPLAY -->
     <div class="flex items-center justify-center gap-3">

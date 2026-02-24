@@ -88,6 +88,15 @@ const submit = async () => {
 
 <template>
   <div class="space-y-6 text-center">
+    <div class="text-center space-y-1">
+      <div
+        class="inline-flex items-center justify-center w-full h-16 rounded-sm bg-indigo-100 mb-2"
+      >
+        <h1 class="text-xl font-bold text-slate-800">
+          {{ `รหัสพนักงาน: ${auth.employeeCode}` }}
+        </h1>
+      </div>
+    </div>
     <h2 class="text-2xl font-bold">
       {{ step === 'pin' ? 'Create PIN' : 'Confirm PIN' }}
     </h2>

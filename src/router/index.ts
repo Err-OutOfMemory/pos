@@ -12,6 +12,7 @@ import RegisterPin from '@/views/auth/RegisterPin.vue'
 import PosHome from '@/views/pos/ProductList.vue'
 
 import Employee from '@/views/admin/Employee.vue'
+import Product from '@/views/admin/Product.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -53,6 +54,7 @@ const router = createRouter({
       meta: { requiresAuth: true, role: 'admin' },
       children: [
         { path: '/admin/employees', component: Employee },
+        { path: '/admin/products', component: Product },
       ],
     },
   ],
