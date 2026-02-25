@@ -104,10 +104,21 @@ const logout = async () => {
           {{ menus.find((m) => isActive(m.path))?.name || 'Management' }}
         </h2>
 
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-4">
+          <button
+            @click="router.push('/pos')"
+            class="hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg bg-[#8b5b71] text-white text-sm font-medium hover:bg-[#724a51] transition shadow-sm"
+          >
+            <Coffee class="h-4 w-4" />
+            Go POS
+          </button>
+
           <div class="text-right hidden sm:block">
             <p class="text-sm font-bold text-gray-800 leading-none">{{ userName }}</p>
-            <span class="uppercase mt-1 inline-flex items-center rounded-md bg-green-400/10 px-1 py-1 text-[10px] text-gray-800 inset-ring inset-ring-green-500/20">{{ userRole }}</span>
+            <span
+              class="uppercase mt-1 inline-flex items-center rounded-md bg-green-400/10 px-1 py-1 text-[10px] text-gray-800 inset-ring inset-ring-green-500/20"
+              >{{ userRole }}</span
+            >
           </div>
           <div class="bg-[#efe9e3] p-1.5 rounded-full border border-[#C9B59C]">
             <UserCircle class="h-6 w-6 text-[#8B735B]" />

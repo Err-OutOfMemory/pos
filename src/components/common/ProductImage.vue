@@ -27,7 +27,7 @@ const onError = () => {
 </script>
 
 <template>
-  <div class="relative h-12 w-12">
+  <div class="relative w-full h-full">
     <!-- Skeleton -->
     <SkeletonLoad v-if="loading" width="48px" height="48px" rounded="rounded-lg" />
 
@@ -37,14 +37,14 @@ const onError = () => {
       :src="getImageUrl(src)"
       @load="onLoad"
       @error="onError"
-      class="h-12 w-12 rounded-lg object-cover border border-gray-100"
+      class="h-full w-full rounded-lg object-cover border border-gray-100"
       alt="product"
     />
 
     <!-- Fallback -->
     <div
       v-if="error"
-      class="h-12 w-12 rounded-lg bg-gray-100 flex items-center justify-center text-xs text-gray-400 border"
+      class="w-full h-full rounded-lg bg-gray-100 flex items-center justify-center text-xs text-gray-400 border"
     >
       No Image
     </div>

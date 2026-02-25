@@ -321,7 +321,9 @@ onMounted(() => {
           <tr v-for="product in products" :key="product.id!" class="hover:bg-gray-50/50 transition">
             <td class="px-6 py-4">
               <div class="flex items-center gap-3">
-                <ProductImage :src="product.img_path" />
+                <div class="h-12 w-12">
+                  <ProductImage :src="product.img_path" />
+                </div>
 
                 <div>
                   <div class="font-bold text-gray-800">{{ product.product_name }}</div>

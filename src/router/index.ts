@@ -9,7 +9,7 @@ import LoginEmployee from '@/views/auth/LoginEmployee.vue'
 import LoginPin from '@/views/auth/LoginPin.vue'
 import RegisterPin from '@/views/auth/RegisterPin.vue'
 
-import PosHome from '@/views/pos/ProductList.vue'
+import PosHome from '@/views/pos/PosHome.vue'
 
 import Employee from '@/views/admin/Employee.vue'
 import Product from '@/views/admin/Product.vue'
