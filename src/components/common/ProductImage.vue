@@ -6,6 +6,13 @@ defineProps<{
   src?: string | null
 }>()
 
+const getImageUrl = (path?: string | null) => {
+  if (!path) return 'https://placehold.co/400'
+
+  if (path.startsWith('http')) return path
+
+  return `${import.meta.env.BASE_URL}${path}`
+}
 const loading = ref(true)
 const error = ref(false)
 
@@ -27,7 +34,7 @@ const onError = () => {
     <!-- Image -->
     <img
       v-show="!loading && !error"
-      :src="src || 'https://placehold.co/400'"
+      :src="getImageUrl(src)"
       @load="onLoad"
       @error="onError"
       class="h-12 w-12 rounded-lg object-cover border border-gray-100"

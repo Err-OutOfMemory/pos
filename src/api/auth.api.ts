@@ -16,3 +16,5 @@ export const registerPin = (employeeId: number, pin: string) =>
     employee_id: employeeId,
     pin,
   })
+
+export const getProfile = () => axios.get('/auth/profile')

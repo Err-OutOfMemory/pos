@@ -25,3 +25,7 @@ export const createProduct = (data: Partial<Product>) => {
 export const updateProduct = (id: number, data: Partial<Product>) => {
   return axios.put(`/products/${id}`, data)
 }
+
+export const deleteProduct = (id: number) => {
+  return axios.delete(`/products/${id}`)
+}

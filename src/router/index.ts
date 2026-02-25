@@ -61,11 +61,15 @@ const router = createRouter({
 })
 
 /* ===== GLOBAL AUTH GUARD ===== */
-router.beforeEach((to) => {
+router.beforeEach(async (to) => {
   const auth = useAuthStore()
 
-  if (to.meta.requiresAuth && !auth.isAuthenticated) {
-    return '/login'
+  if (to.meta.requiresAuth) {
+    const valid = await auth.validateToken()
+
+    if (!valid) {
+      return '/login'
+    }
   }
 
   if (to.meta.role && auth.user?.role !== to.meta.role) {

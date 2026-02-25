@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { getProfile } from '@/api/auth.api'
 
 export interface AuthUser {
   emp_code: string
@@ -26,6 +27,22 @@ export const useAuthStore = defineStore('auth', {
   },
 
   actions: {
+    async validateToken() {
+      if (!this.token) return false
+
+      try {
+        const res = await getProfile()
+
+        this.user = res.data
+        localStorage.setItem('user', JSON.stringify(res.data))
+
+        return true
+      } catch {
+        this.logout()
+        return false
+      }
+    },
+
     setTempUser(payload: { employee_id: number; emp_code: string; is_first_login: boolean }) {
       this.employeeId = payload.employee_id
       this.employeeCode = payload.emp_code

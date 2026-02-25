@@ -1,13 +1,20 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
 import { Plus, Search, X, Edit2, Trash2 } from 'lucide-vue-next'
-import { getProducts, uploadImage, createProduct, updateProduct } from '@/api/product.api'
-import { getCategories } from '@/api/category.api'
+import {
+  getProducts,
+  uploadImage,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+} from '@/api/product.api'
+import { getCategories, createCategory, updateCategory } from '@/api/category.api'
 import type { Category } from '@/types/category'
 import type { Product } from '@/types/product'
 import Pagination from '@/components/common/Pagination.vue'
 import ProductImage from '@/components/common/ProductImage.vue'
 import ProductModal from '@/components/admin/ProductModal.vue'
+import CategoryModal from '@/components/admin/CategoryModal.vue'
 import Swal from 'sweetalert2'
 
 const products = ref<Product[]>([])
@@ -28,6 +35,11 @@ const isModalOpen = ref(false)
 const isEditMode = ref(false)
 const currentProduct = ref<Product | null>(null)
 
+const activeCategoryMenu = ref<number | null>(null)
+const isCategoryModalOpen = ref(false)
+const isCategoryEditMode = ref(false)
+const currentCategory = ref<Category | null>(null)
+
 const openAddModal = () => {
   isEditMode.value = false
   currentProduct.value = null
@@ -38,6 +50,19 @@ const openEditModal = (product: Product) => {
   isEditMode.value = true
   currentProduct.value = { ...product }
   isModalOpen.value = true
+}
+
+const openEditCategory = (category: Category) => {
+  isCategoryEditMode.value = true
+  currentCategory.value = category
+  isCategoryModalOpen.value = true
+  activeCategoryMenu.value = null
+}
+
+const openCategoryModal = () => {
+  isCategoryEditMode.value = false
+  currentCategory.value = null
+  isCategoryModalOpen.value = true
 }
 
 const handleSave = async (payload: any) => {
@@ -81,6 +106,72 @@ const handleSave = async (payload: any) => {
     Swal.fire('ผิดพลาด', err.response?.data?.error || 'ไม่สามารถบันทึกข้อมูลได้', 'error')
   } finally {
     loading.value = false
+  }
+}
+
+const handleSaveCategory = async (payload: any) => {
+  loading.value = true
+
+  try {
+    if (isCategoryEditMode.value && payload.id) {
+      await updateCategory(payload.id, {
+        category_name: payload.category_name,
+      })
+    } else {
+      await createCategory({
+        category_name: payload.category_name,
+      })
+    }
+
+    isCategoryModalOpen.value = false
+    await Swal.fire({
+      icon: 'success',
+      title: 'สำเร็จ',
+      text: 'บันทึกข้อมูลหมวดหมู่เรียบร้อยแล้ว',
+      timer: 1500,
+      showConfirmButton: false,
+    })
+
+    fetchCategories()
+  } catch (err: any) {
+    console.error(err)
+    Swal.fire('ผิดพลาด', err.response?.data?.error || 'ไม่สามารถบันทึกข้อมูลได้', 'error')
+  } finally {
+    loading.value = false
+  }
+}
+
+const handleDelete = async (productId: number) => {
+  const result = await Swal.fire({
+    title: 'ลบสินค้า?',
+    text: 'คุณต้องการลบสินค้านี้ใช่หรือไม่',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#f07c7c',
+    cancelButtonColor: '#aaa',
+    confirmButtonText: 'ลบสินค้า',
+    cancelButtonText: 'ยกเลิก',
+  })
+
+  if (!result.isConfirmed) return
+
+  try {
+    await deleteProduct(productId)
+    Swal.fire({
+      title: 'สำเร็จ',
+      text: 'ลบสินค้ารายการนี้เรียบร้อยแล้ว',
+      icon: 'success',
+      timer: 1500,
+      showConfirmButton: false,
+    })
+    fetchProducts()
+  } catch (err) {
+    console.error(err)
+    Swal.fire({
+      title: 'เกิดข้อผิดพลาด',
+      text: 'ไม่สามารถลบสินค้าได้',
+      icon: 'error',
+    })
   }
 }
 
@@ -176,22 +267,31 @@ onMounted(() => {
             ทั้งหมด
           </button>
 
-          <button
-            v-for="cat in categories"
-            :key="cat.id"
-            @click="selectedCategory = cat.id"
-            class="shrink-0 px-6 py-2 rounded-full text-sm font-medium transition-all border"
-            :class="
-              selectedCategory === cat.id
-                ? 'bg-[#8B735B] text-white border-[#8B735B] shadow-md'
-                : 'bg-white text-gray-600 border-gray-200 hover:border-[#C9B59C]'
-            "
-          >
-            {{ cat.category_name }}
-          </button>
+          <div v-for="cat in categories" :key="cat.id" class="relative shrink-0 group">
+            <!-- CHIP -->
+            <button
+              @click="selectedCategory = cat.id"
+              class="px-6 py-2 rounded-full text-sm font-medium transition-all border"
+              :class="
+                selectedCategory === cat.id
+                  ? 'bg-[#8B735B] text-white border-[#8B735B] shadow-md'
+                  : 'bg-white text-gray-600 border-gray-200 hover:border-[#C9B59C]'
+              "
+            >
+              {{ cat.category_name }}
+            </button>
+            <!-- EDIT ICON -->
+            <button
+              v-if="selectedCategory === cat.id"
+              @click.stop="openEditCategory(cat)"
+              class="absolute -top-1 -right-1 bg-white border border-gray-200 rounded-full p-1 shadow-sm opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100 transition-all duration-200"
+            >
+              <Edit2 class="w-3 h-3 text-gray-600" />
+            </button>
+          </div>
 
-          <!-- @click="openCategoryModal" -->
           <button
+            @click="openCategoryModal"
             class="shrink-0 p-2 rounded-full border-2 border-dashed border-gray-300 text-gray-400 hover:border-[#8B735B] hover:text-[#8B735B] transition-all ml-2"
             title="เพิ่มหมวดหมู่ใหม่"
           >
@@ -268,7 +368,10 @@ onMounted(() => {
                 >
                   <Edit2 class="h-4 w-4" />
                 </button>
-                <button class="p-2 text-gray-400 hover:text-red-500 transition">
+                <button
+                  @click="handleDelete(product.id!)"
+                  class="p-2 text-gray-400 hover:text-red-500 transition"
+                >
                   <Trash2 class="h-4 w-4" />
                 </button>
               </div>
@@ -303,6 +406,14 @@ onMounted(() => {
     :categories="categories"
     @close="isModalOpen = false"
     @save="handleSave"
+  />
+
+  <CategoryModal
+    :show="isCategoryModalOpen"
+    :is-edit="isCategoryEditMode"
+    :initial-data="currentCategory"
+    @close="isCategoryModalOpen = false"
+    @save="handleSaveCategory"
   />
 </template>
 
