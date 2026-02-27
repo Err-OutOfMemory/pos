@@ -1,11 +1,13 @@
 import { defineStore } from 'pinia'
-import type { Product } from '@/types/product'
 
 export type CartItem = {
   id: number
   product_name: string
   price: number
   qty: number
+  description?: string
+  type: string
+  category_name: string
 }
 
 export const useCartStore = defineStore('cart', {
@@ -18,8 +20,10 @@ export const useCartStore = defineStore('cart', {
   },
 
   actions: {
-    addToCart(product: { id: number; product_name: string; price: number }) {
-      const existing = this.items.find((i) => i.id === product.id)
+    addToCart(product: { id: number; product_name: string; price: number; description?: string; type : string  ; category_name: string }) {
+      const existing = this.items.find(
+        (i) => i.id === product.id && i.description === product.description,
+      )
 
       if (existing) {
         existing.qty++
@@ -31,19 +35,19 @@ export const useCartStore = defineStore('cart', {
       }
     },
 
-    increaseQty(id: number) {
-      const item = this.items.find((i) => i.id === id)
+    increaseQty(id: number, description?: string) {
+      const item = this.items.find((i) => i.id === id && i.description === description)
       if (item) item.qty++
     },
 
-    decreaseQty(id: number) {
-      const item = this.items.find((i) => i.id === id)
+    decreaseQty(id: number, description?: string) {
+      const item = this.items.find((i) => i.id === id && i.description === description)
       if (!item) return
 
       if (item.qty > 1) {
         item.qty--
       } else {
-        this.items = this.items.filter((i) => i.id !== id)
+        this.items = this.items.filter((i) => i.id !== id || i.description !== description)
       }
     },
 

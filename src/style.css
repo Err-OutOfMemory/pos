@@ -1,5 +1,7 @@
 @import 'tailwindcss';
 
 html {
-  font-family: 'Noto Sans Thai', sans-serif;
+  font-family: 'Playpen Sans Thai', cursive;
+  font-optical-sizing: auto;
+  font-style: normal;
 }

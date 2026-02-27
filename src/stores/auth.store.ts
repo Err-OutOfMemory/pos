@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { getProfile } from '@/api/auth.api'
 
 export interface AuthUser {
+  employee_id: number
   emp_code: string
   name: string
   role: string

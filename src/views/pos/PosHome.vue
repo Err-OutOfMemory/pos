@@ -25,6 +25,9 @@ const addProduct = (product: Product) => {
     id: product.id,
     product_name: product.product_name,
     price: product.price,
+    description: product.description,
+    type: product.type,
+    category_name: product.category?.category_name ?? '',
   })
 }
 

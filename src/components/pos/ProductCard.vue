@@ -11,16 +11,31 @@ const isCoffee = computed(() => props.product.category?.category_name?.toLowerCa
 
 const selectedSugar = ref<number | null>(null)
 
-const sugarLevel = {
+const sugarLevel: Record<number, string> = {
   0: '0%',
   1: '50%',
   2: '100%',
   3: '200%',
 }
 
+const add = () => {
+  const description =
+    isCoffee.value && selectedSugar.value !== null
+      ? `ระดับความหวาน ${sugarLevel[selectedSugar.value]}`
+      : ''
+
+  emit('add', {
+    ...props.product,
+    description,
+    type: props.product.type || '',
+    category_name: props.product.category?.category_name || '',
+  })
+
+  selectedSugar.value = null
+}
+
 const emit = defineEmits<{
-  (e: 'add', product: Product): void
-  (e: 'selectSugar', product: Product, sugarLevel: number): void
+  (e: 'add', product: Product & { description?: string; type?: string; category_name?: string}): void
 }>()
 </script>
 
@@ -64,7 +79,7 @@ const emit = defineEmits<{
 
     <button
       class="mt-auto w-full bg-[#8B735B] text-white py-2 rounded-lg text-sm font-medium hover:bg-[#724a51] transition"
-      @click.stop="emit('add', product)"
+      @click.stop="add()"
     >
       เพิ่มลงตะกร้า
     </button>
